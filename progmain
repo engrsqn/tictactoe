@@ -103,3 +103,4 @@ function checkForWinner($board, $row, $col) {
             return true;
         }
     }
+?>
