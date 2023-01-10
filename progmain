@@ -1,0 +1,105 @@
+<?php
+
+// Initialize the board
+$board = array(
+    array(' ', ' ', ' ', ' ', ' '),
+    array(' ', ' ', ' ', ' ', ' '),
+    array(' ', ' ', ' ', ' ', ' '),
+    array(' ', ' ', ' ', ' ', ' '),
+    array(' ', ' ', ' ', ' ', ' ')
+);
+
+// Initialize the players
+$players = array('X', 'O');
+
+// Initialize the current player
+$currentPlayer = 0;
+
+// Main game loop
+while (true) {
+    // Print the board
+    printBoard($board);
+
+    // Get the row and column from the user
+    $row = getRow();
+    $col = getCol();
+
+    // Make the move
+    $board[$row][$col] = $players[$currentPlayer];
+
+    // Check for a winner
+    if (checkForWinner($board, $row, $col)) {
+        printBoard($board);
+        echo $players[$currentPlayer] . " wins!\n";
+        break;
+    }
+
+    // Switch players
+    $currentPlayer = ($currentPlayer + 1) % 2;
+}
+
+/**
+ * Prints the board to the console.
+ *
+ * @param $board The board to print
+ */
+function printBoard($board) {
+    for ($i = 0; $i < 5; $i++) {
+        for ($j = 0; $j < 5; $j++) {
+            echo '|' . $board[$i][$j];
+        }
+        echo "|\n";
+    }
+}
+
+/**
+ * Gets a row from the user.
+ *
+ * @return The row
+ */
+function getRow() {
+    while (true) {
+        echo 'Enter a row: ';
+        $row = trim(fgets(STDIN));
+        if (is_numeric($row) && $row >= 0 && $row < 5) {
+            return $row;
+        }
+        echo "Invalid input.\n";
+    }
+}
+
+/**
+ * Gets a column from the user.
+ *
+ * @return The column
+ */
+function getCol() {
+    while (true) {
+        echo 'Enter a column: ';
+        $col = trim(fgets(STDIN));
+        if (is_numeric($col) && $col >= 0 && $col < 5) {
+            return $col;
+        }
+        echo "Invalid input.\n";
+    }
+}
+
+/**
+ * Checks if the current player has won the game.
+ *
+ * @param $board The game board
+ * @param $row The row of the last move
+ * @param $col The column of the last move
+ *
+ * @return true if the player has won, false otherwise
+ */
+function checkForWinner($board, $row, $col) {
+    // Check the row
+    for ($i = 0; $i < 5; $i++) {
+        if ($board[$row][$i] != $board[$row][$col]) {
+            break;
+        }
+        if ($i == 4) {
+            return true;
+        }
+    }
